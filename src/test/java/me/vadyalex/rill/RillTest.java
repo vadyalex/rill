@@ -96,6 +96,57 @@ public class RillTest {
     }
 
     @Test
+    public void zip_even_nulls() {
+
+        final ImmutableList<String> result = Rill
+                .from(
+                        1, 2, 3, 4
+                )
+                .zip(
+                        (i, s) -> i + " -> " + s,
+                        null, null, null
+                )
+                .toImmutableList();
+
+        LOGGER.info(" => {}", result);
+
+        Assertions
+                .assertThat(result)
+                .hasSize(3)
+                .contains(
+                        "1 -> null",
+                        "2 -> null",
+                        "3 -> null"
+                );
+    }
+
+    @Test
+    public void zip_uneven_nulls() {
+
+        final ImmutableList<String> result = Rill
+                .from(
+                        1, 2, 3, 4
+                )
+                .zipUneven(
+                        (i, s) -> i.orElse(-1) + " -> " + s.orElse(""),
+                        null, null, null
+                )
+                .toImmutableList();
+
+        LOGGER.info(" => {}", result);
+
+        Assertions
+                .assertThat(result)
+                .hasSize(4)
+                .contains(
+                        "1 -> ",
+                        "2 -> ",
+                        "3 -> ",
+                        "4 -> "
+                );
+    }
+
+    @Test
     public void basic_map_usage() {
 
         final ImmutableMap<String, Integer> result = Rill

@@ -375,11 +375,11 @@ public class Rill {
                 public R next() {
                     return zipper.apply(
                             internalIterator.hasNext() ?
-                                    Optional.of(internalIterator.next())
+                                    Optional.ofNullable(internalIterator.next())
                                     :
                                     Optional.<T>empty(),
                             anotherIterator.hasNext() ?
-                                    Optional.of(anotherIterator.next())
+                                    Optional.ofNullable(anotherIterator.next())
                                     :
                                     Optional.<U>empty()
                     );
