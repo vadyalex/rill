@@ -152,20 +152,20 @@ public class RillTest {
         final ImmutableMap<String, Integer> result = Rill
                 .<String>from()
                 .concat(
-                        Rill.from("1")
+                        Rill.from("A")
                 )
-                .concat("2")
-                .concat("+", "+")
+                .concat("B")
+                .concat("X", "X")
                 .concat(
-                        ImmutableList.of("+", "+")
+                        ImmutableList.of("X", "X")
                 )
                 .concat(
-                        Iterators.forArray("+", "+")
+                        Iterators.forArray("X", "X")
                 )
                 .filter(
-                        s -> !s.equals("+")
+                        s -> !s.equals("X")
                 )
-                .concat("3")
+                .concat("C")
                 .zip(
                         Maps::immutableEntry,
                         0, 1, 2
@@ -180,9 +180,9 @@ public class RillTest {
                 .assertThat(result)
                 .hasSize(3)
                 .containsKeys(
-                        "1",
-                        "2",
-                        "3"
+                        "A",
+                        "B",
+                        "C"
                 )
                 .containsValue(
                         0
