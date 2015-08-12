@@ -387,4 +387,36 @@ public class RillTest {
                 .isZero();
     }
 
+    @Test
+    public void check_toImmutableMap() {
+
+        final ImmutableMap<String, Integer> result = Rill
+                .from(
+                        1, 2, 3
+                )
+                .toImmutableMap(
+                        Object::toString,
+                        i -> i
+                );
+
+        Assertions
+                .assertThat(result)
+                .hasSize(3)
+                .containsKeys(
+                        "1",
+                        "2",
+                        "3"
+                )
+                .containsValue(
+                        1
+                )
+                .containsValue(
+                        2
+                )
+                .containsValue(
+                        3
+                );
+
+    }
+
 }

@@ -4,6 +4,7 @@ package me.vadyalex.rill;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 import me.vadyalex.rill.collector.ImmutableCollectors;
 
 import java.util.*;
@@ -560,6 +561,17 @@ public class Rill {
         public <K, V> ImmutableMap<K, V> toImmutableMap(Function<? super T, ? extends Map.Entry<K, V>> mapper) {
             return map(
                     Objects.requireNonNull(mapper)
+            ).collect(
+                    ImmutableCollectors.toImmutableMap()
+            );
+        }
+
+        public <K, V> ImmutableMap<K, V> toImmutableMap(Function<? super T, K> keyMapper, Function<? super T, V> valueMapper) {
+            return map(
+                    t -> Maps.immutableEntry(
+                            Objects.requireNonNull(keyMapper).apply(t),
+                            Objects.requireNonNull(valueMapper).apply(t)
+                    )
             ).collect(
                     ImmutableCollectors.toImmutableMap()
             );
