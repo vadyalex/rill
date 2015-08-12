@@ -13,7 +13,7 @@ public interface Streamable<T> {
                     Iterable.class.cast(this)
             );
 
-        return Rill.EMPTY;
+        return Rill.from();
     }
 
 }

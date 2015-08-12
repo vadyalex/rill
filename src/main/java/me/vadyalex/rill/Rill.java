@@ -12,13 +12,11 @@ import java.util.stream.*;
 
 public class Rill {
 
-    public static final Δ EMPTY = from(
-            Stream.empty()
-    );
-
     @SuppressWarnings("unchecked")
     public static final <E> Δ<E> from() {
-        return EMPTY;
+        return from(
+                Stream.<E>empty()
+        );
     }
 
     public static final <E> Δ<E> from(final E... ts) {

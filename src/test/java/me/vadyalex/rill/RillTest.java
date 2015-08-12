@@ -196,4 +196,20 @@ public class RillTest {
 
     }
 
+    @Test
+    public void check_empty_rill() {
+
+        Assertions
+                .assertThat(
+                        Rill.from().count()
+                )
+                .isZero();
+
+        Assertions
+                .assertThat(
+                        Rill.from().count()
+                )
+                .isZero();
+    }
+
 }
