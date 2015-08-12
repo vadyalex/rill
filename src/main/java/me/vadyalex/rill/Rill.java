@@ -495,7 +495,7 @@ public class Rill {
             );
         }
 
-        public Δ<T> concat(Stream<? extends T> stream) {
+        public Δ<T> join(Stream<? extends T> stream) {
             return from(
                     Stream.concat(
                             this.internal,
@@ -504,32 +504,41 @@ public class Rill {
             );
         }
 
-        public Δ<T> concat(T t) {
-            return concat(
+        public Δ<T> join(Stream<? extends T>... streams) {
+            return from(streams)
+                    .reduce(
+                            this,
+                            (Δ<T> result, Stream<? extends T> stream) -> result.join(stream),
+                            (t1, t2) -> from(t1).join(t2)
+                    );
+        }
+
+        public Δ<T> join(T t) {
+            return join(
                     from(
                             t
                     )
             );
         }
 
-        public Δ<T> concat(T... ts) {
-            return concat(
+        public Δ<T> join(T... ts) {
+            return join(
                     from(
                             ts
                     )
             );
         }
 
-        public Δ<T> concat(Iterable<? extends T> iterable) {
-            return concat(
+        public Δ<T> join(Iterable<? extends T> iterable) {
+            return join(
                     from(
                             iterable
                     )
             );
         }
 
-        public Δ<T> concat(Iterator<? extends T> iterator) {
-            return concat(
+        public Δ<T> join(Iterator<? extends T> iterator) {
+            return join(
                     from(
                             iterator
                     )

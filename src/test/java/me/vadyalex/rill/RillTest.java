@@ -5,27 +5,156 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
+import me.vadyalex.rill.collector.ImmutableCollectors;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.stream.Stream;
 
 public class RillTest {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(RillTest.class);
 
     @Test
+    public void motivation_1_standard_concatenation() {
+
+        final Stream<Integer> stream1 = Stream.of(1);
+        final Stream<Integer> stream2 = Stream.of(2);
+        final Stream<Integer> stream3 = Stream.of(3);
+        final Stream<Integer> stream4 = Stream.of(4);
+
+        final Stream<Integer> result = Stream.concat(
+                stream1,
+                Stream.concat(
+                        stream2,
+                        Stream.concat(
+                                stream3,
+                                stream4
+                        )
+                )
+        );
+
+        final ImmutableList<Integer> list = result.collect(ImmutableCollectors.toImmutableList());
+
+        LOGGER.info(
+                " -> {}", list
+        );
+
+        Assertions
+                .assertThat(list)
+                .hasSize(4)
+                .containsSequence(1, 2, 3, 4);
+    }
+
+    @Test
+    public void motivation_1_rill_concatenation() {
+
+        final Stream<Integer> stream1 = Stream.of(1);
+        final Stream<Integer> stream2 = Stream.of(2);
+        final Stream<Integer> stream3 = Stream.of(3);
+        final Stream<Integer> stream4 = Stream.of(4);
+
+        final Stream<Integer> result = Rill
+                .from(stream1)
+                .join(stream2, stream3, stream4);
+
+        final ImmutableList<Integer> list = result.collect(ImmutableCollectors.toImmutableList());
+
+        LOGGER.info(
+                " -> {}", list
+        );
+
+        Assertions
+                .assertThat(list)
+                .hasSize(4)
+                .containsSequence(1, 2, 3, 4);
+    }
+
+    @Test
+    public void motivation_1_standard_concatenation_with_filters() {
+
+        final Stream<Integer> stream1 = Stream.of(-1, 1);
+        final Stream<Integer> stream2 = Stream.of(2, 5);
+        final Stream<Integer> stream3 = Stream.of(3, 0);
+        final Stream<Integer> stream4 = Stream.of(4, 5);
+
+        final Stream<Integer> result = Stream.concat(
+                Stream
+                        .concat(
+                                Stream
+                                        .concat(
+                                                stream1,
+                                                stream2
+                                        )
+                                        .filter(
+                                                i -> i != 5
+                                        ),
+                                stream3
+                        )
+                        .filter(
+                                i -> i != 0
+                        ),
+                stream4
+        );
+
+        final ImmutableList<Integer> list = result.collect(ImmutableCollectors.toImmutableList());
+
+        LOGGER.info(
+                " -> {}", list
+        );
+
+        Assertions
+                .assertThat(list)
+                .hasSize(6)
+                .containsSequence(-1, 1, 2, 3, 4, 5);
+    }
+
+    @Test
+    public void motivation_1_rill_concatenation_with_filters() {
+
+        final Stream<Integer> stream1 = Stream.of(-1, 1);
+        final Stream<Integer> stream2 = Stream.of(2, 5);
+        final Stream<Integer> stream3 = Stream.of(3, 0);
+        final Stream<Integer> stream4 = Stream.of(4, 5);
+
+        final Stream<Integer> result = Rill
+                .<Integer>from()
+                .join(stream1, stream2)
+                .filter(
+                        i -> i != 5
+                )
+                .join(stream3)
+                .filter(
+                        i -> i != 0
+                )
+                .join(stream4);
+
+        final ImmutableList<Integer> list = result.collect(ImmutableCollectors.toImmutableList());
+
+        LOGGER.info(
+                " -> {}", list
+        );
+
+        Assertions
+                .assertThat(list)
+                .hasSize(6)
+                .containsSequence(-1, 1, 2, 3, 4, 5);
+    }
+
+    @Test
     public void basic_usage() {
 
         final ImmutableList<String> result = Rill
                 .from(1)
-                .concat(2)
-                .concat(-1, 0)
+                .join(2)
+                .join(-1, 0)
                 .filter(
                         i -> i > 0
                 )
-                .concat(3)
-                .concat(0)
+                .join(3)
+                .join(0)
                 .zip(
                         (a, b) -> a + " -> " + b,
                         1, 2, 3, 4
@@ -151,21 +280,21 @@ public class RillTest {
 
         final ImmutableMap<String, Integer> result = Rill
                 .<String>from()
-                .concat(
+                .join(
                         Rill.from("A")
                 )
-                .concat("B")
-                .concat("X", "X")
-                .concat(
+                .join("B")
+                .join("X", "X", "X")
+                .join(
                         ImmutableList.of("X", "X")
                 )
-                .concat(
+                .join(
                         Iterators.forArray("X", "X")
                 )
                 .filter(
                         s -> !s.equals("X")
                 )
-                .concat("C")
+                .join("C")
                 .zip(
                         Maps::immutableEntry,
                         0, 1, 2
@@ -193,6 +322,52 @@ public class RillTest {
                 .containsValue(
                         2
                 );
+
+    }
+
+    @Test
+    public void check_stream_concat() {
+
+        final Stream<Integer> stream1 = Stream.of(1);
+        final Stream<Integer> stream2 = Stream.of(2);
+        final Stream<Integer> stream3 = Stream.of(3, 4, 5);
+        final Stream<Integer> stream4 = Stream.of(6);
+
+        final ImmutableList<Integer> result = Rill
+                .<Integer>from()
+                .join(-2, -1)
+                .join(0)
+                .join(stream1)
+                .join(stream2)
+                .join(stream3)
+                .join(stream4)
+                .collect(
+                        ImmutableCollectors.toImmutableList()
+                );
+
+        Assertions.assertThat(result).containsExactly(-2, -1, 0, 1, 2, 3, 4, 5, 6);
+
+    }
+
+    @Test
+    public void check_stream_concat_2() {
+
+        final Stream<Integer> stream1 = Stream.of(1);
+        final Stream<Integer> stream2 = Stream.of(2);
+        final Stream<Integer> stream3 = Stream.of(3, 4, 5);
+        final Stream<Integer> stream4 = Stream.of(6);
+
+        final ImmutableList<Integer> result = Rill
+                .from(-2, -1, 0)
+                .join(
+                        stream1,
+                        stream2,
+                        stream3,
+                        stream4
+                )
+                .toImmutableList();
+
+        Assertions.assertThat(result).containsExactly(-2, -1, 0, 1, 2, 3, 4, 5, 6);
 
     }
 
