@@ -419,4 +419,14 @@ public class RillTest {
 
     }
 
+    @Test
+    public void check_last() {
+        Assertions
+                .assertThat(
+                        Rill.from("A", "B", "C").findLast().orElse(null)
+                )
+                .isEqualTo("C");
+
+    }
+
 }

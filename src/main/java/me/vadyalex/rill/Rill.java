@@ -304,6 +304,10 @@ public class Rill {
             return this.internal.findAny();
         }
 
+        public Optional<T> findLast() {
+            return this.internal.reduce( (unused, result) -> result );
+        }
+
         @Override
         public Iterator<T> iterator() {
             return this.internal.iterator();
