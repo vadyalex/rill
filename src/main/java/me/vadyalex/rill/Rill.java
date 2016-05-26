@@ -71,6 +71,18 @@ public class Rill {
         );
     }
 
+    public static final <E> Δ<E> from(final Iterator<E> iterator) {
+
+        Objects.requireNonNull(iterator);
+
+        return from(
+                StreamSupport.stream(
+                        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
+                        false
+                )
+        );
+    }
+
     public static final <E> Δ<E> parallel(final Iterable<E> iterable) {
 
         Objects.requireNonNull(iterable);
@@ -90,18 +102,6 @@ public class Rill {
         return from(
                 StreamSupport.stream(
                         iterable.spliterator(),
-                        false
-                )
-        );
-    }
-
-    public static final <E> Δ<E> from(final Iterator<E> iterator) {
-
-        Objects.requireNonNull(iterator);
-
-        return from(
-                StreamSupport.stream(
-                        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
                         false
                 )
         );
