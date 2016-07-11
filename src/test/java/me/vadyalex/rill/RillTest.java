@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RillTest {
@@ -385,6 +386,32 @@ public class RillTest {
                         Rill.from().count()
                 )
                 .isZero();
+    }
+
+    @Test
+    public void create_rill_from_null() {
+
+        final Object o = null;
+
+        Assertions
+                .assertThat(
+                        Rill.from(o).count()
+                )
+                .isEqualTo(1);
+
+    }
+
+    @Test
+    public void can_join_nulls() {
+
+        final Object o0 = null;
+        final Object o1 = null;
+
+        Assertions
+                .assertThat(
+                        Rill.from(o0).join(o1).collect(Collectors.toList())
+                )
+                .containsExactly(null, null);
     }
 
     @Test

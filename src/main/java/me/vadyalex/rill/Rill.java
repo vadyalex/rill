@@ -21,19 +21,17 @@ public class Rill {
     }
 
     public static final <E> Δ<E> from(final E... ts) {
-
-        if (ts == null)
-            return from();
-        else
-            return from(
-                    Arrays.stream(ts)
-            );
+        return from(
+                Stream.of(
+                        ts
+                )
+        );
     }
 
     public static final <E> Δ<E> from(final E e) {
         return from(
                 Stream.of(
-                        Objects.requireNonNull(e)
+                        e
                 )
         );
     }
@@ -390,9 +388,9 @@ public class Rill {
             };
 
 
-            int characteristics = internalSpliterator.characteristics() & anotherSpliterator.characteristics() & ~(Spliterator.DISTINCT | Spliterator.SORTED);
+            final int characteristics = internalSpliterator.characteristics() & anotherSpliterator.characteristics() & ~(Spliterator.DISTINCT | Spliterator.SORTED);
 
-            long zipSize = ((characteristics & Spliterator.SIZED) != 0) ?
+            final long zipSize = ((characteristics & Spliterator.SIZED) != 0) ?
                     Math.min(
                             internalSpliterator.getExactSizeIfKnown(),
                             anotherSpliterator.getExactSizeIfKnown()
@@ -459,9 +457,9 @@ public class Rill {
             };
 
 
-            int characteristics = internalSpliterator.characteristics() & anotherSpliterator.characteristics() & ~(Spliterator.DISTINCT | Spliterator.SORTED);
+            final int characteristics = internalSpliterator.characteristics() & anotherSpliterator.characteristics() & ~(Spliterator.DISTINCT | Spliterator.SORTED);
 
-            long zipSize = ((characteristics & Spliterator.SIZED) != 0) ?
+            final long zipSize = ((characteristics & Spliterator.SIZED) != 0) ?
                     Math.min(
                             internalSpliterator.getExactSizeIfKnown(),
                             anotherSpliterator.getExactSizeIfKnown()
