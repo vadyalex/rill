@@ -12,11 +12,6 @@ public class TuplesTest {
     @Test
     public void create_some_tuples() {
 
-        final Tuples.Empty empty0 = Tuples.of();
-        final Tuples.Tuple empty1 = Tuples.of();
-
-        Assertions.assertThat(empty0).isEqualTo(empty1);
-
         final Tuples.Monuple<String> monuple0 = Tuples.of("A");
         final Tuples.Tuple monuple1 = Tuples.of("A");
         final Tuples.Tuple monuple2 = Tuples.of(0);
@@ -39,10 +34,28 @@ public class TuplesTest {
 
         Assertions.assertThat(quadruple0).isEqualTo(quadruple1);
 
-        final Tuples.Quintuple<String, String, String, String, String> quintuple0 = Tuples.of("A", "B", "C", "D", "E");
-        final Tuples.Tuple quintuple1 = Tuples.of("A", "B", "C", "D", "E");
+        final Tuples.Pentuple<String, String, String, String, String> pentuple0 = Tuples.of("A", "B", "C", null, "E");
+        final Tuples.Tuple pentuple1 = Tuples.of("A", "B", "C", null, "E");
 
-        Assertions.assertThat(quintuple0).isEqualTo(quintuple1);
+        Assertions.assertThat(pentuple0).isEqualTo(pentuple1);
+
+        final Tuples.Hextuple<String, String, String, String, String, Integer> hextuple0 = Tuples.of("A", "B", "C", "D", "E", 1);
+        final Tuples.Tuple hextuple1 = Tuples.of("A", "B", "C", "D", "E", 1);
+
+        Assertions.assertThat(hextuple0).isEqualTo(hextuple1);
+
+    }
+
+    @Test
+    public void check_empty_tuple_even_with_different_types() {
+
+        final Tuples.Tuple empty0 = Tuples.of();
+        final Tuples.Empty<String> empty1 = Tuples.of();
+        final Tuples.Empty<Integer> empty2 = Tuples.of();
+
+        Assertions.assertThat(empty1).isEqualTo(empty0);
+        Assertions.assertThat(empty1).isEqualTo(empty2);
+        Assertions.assertThat(empty0).isEqualTo(empty2);
 
     }
 

@@ -1,14 +1,18 @@
 package me.vadyalex.rill.tuple;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by vadyalex.
  */
 public class Tuples {
 
+    private static final Empty<?> EMPTY = new Empty<>();
+
+    @SuppressWarnings("unchecked")
     public static final <A> Empty<A> of() {
-        return new Empty<>();
+        return (Empty<A>) EMPTY;
     }
 
     public static final <A> Monuple<A> of(A _0) {
@@ -27,14 +31,18 @@ public class Tuples {
         return new Quadruple<>(_0, _1, _2, _3);
     }
 
-    public static final <A, B, C, D, E> Quintuple<A, B, C, D, E> of(A _0, B _1, C _2, D _3, E _4) {
-        return new Quintuple<>(_0, _1, _2, _3, _4);
+    public static final <A, B, C, D, E> Pentuple<A, B, C, D, E> of(A _0, B _1, C _2, D _3, E _4) {
+        return new Pentuple<>(_0, _1, _2, _3, _4);
+    }
+
+    public static final <A, B, C, D, E, F> Hextuple<A, B, C, D, E, F> of(A _0, B _1, C _2, D _3, E _4, F _5) {
+        return new Hextuple<>(_0, _1, _2, _3, _4, _5);
     }
 
     public interface Tuple {
     }
 
-    public static final class Empty<A> implements Tuple {
+    public static class Empty<A> implements Tuple {
 
         @Override
         public boolean equals(Object o) {
@@ -50,12 +58,20 @@ public class Tuples {
 
     }
 
-    public static final class Monuple<A> implements Tuple {
+    public static class Monuple<A> extends Empty<A> {
 
-        public final A _0;
+        public final Optional<A> _0;
 
         private Monuple(A _0) {
-            this._0 = _0;
+            this._0 = Optional.ofNullable(_0);
+        }
+
+        public Optional<A> $0() {
+            return _0;
+        }
+
+        public Optional<A> first() {
+            return _0;
         }
 
         @Override
@@ -73,14 +89,21 @@ public class Tuples {
 
     }
 
-    public static final class Couple<A, B> implements Tuple {
+    public static class Couple<A, B> extends Monuple<A> {
 
-        public final A _0;
-        public final B _1;
+        public final Optional<B> _1;
 
         private Couple(A _0, B _1) {
-            this._0 = _0;
-            this._1 = _1;
+            super(_0);
+            this._1 = Optional.ofNullable(_1);
+        }
+
+        public Optional<B> $1() {
+            return _1;
+        }
+
+        public Optional<B> second() {
+            return _1;
         }
 
         @Override
@@ -98,16 +121,21 @@ public class Tuples {
         }
     }
 
-    public static final class Triple<A, B, C> implements Tuple {
+    public static class Triple<A, B, C> extends Couple<A, B> {
 
-        public final A _0;
-        public final B _1;
-        public final C _2;
+        public final Optional<C> _2;
 
         private Triple(A _0, B _1, C _2) {
-            this._0 = _0;
-            this._1 = _1;
-            this._2 = _2;
+            super(_0, _1);
+            this._2 = Optional.ofNullable(_2);
+        }
+
+        public Optional<C> $2() {
+            return _2;
+        }
+
+        public Optional<C> third() {
+            return _2;
         }
 
         @Override
@@ -126,18 +154,21 @@ public class Tuples {
         }
     }
 
-    public static final class Quadruple<A, B, C, D> implements Tuple {
+    public static class Quadruple<A, B, C, D> extends Triple<A, B, C> {
 
-        public final A _0;
-        public final B _1;
-        public final C _2;
-        public final D _3;
+        public final Optional<D> _3;
 
         private Quadruple(A _0, B _1, C _2, D _3) {
-            this._0 = _0;
-            this._1 = _1;
-            this._2 = _2;
-            this._3 = _3;
+            super(_0, _1, _2);
+            this._3 = Optional.ofNullable(_3);
+        }
+
+        public Optional<D> $3() {
+            return _3;
+        }
+
+        public Optional<D> fourth() {
+            return _3;
         }
 
         @Override
@@ -157,32 +188,70 @@ public class Tuples {
         }
     }
 
-    public static final class Quintuple<A, B, C, D, E> implements Tuple {
+    public static class Pentuple<A, B, C, D, E> extends Quadruple<A, B, C, D> {
 
-        public final A _0;
-        public final B _1;
-        public final C _2;
-        public final D _3;
-        public final E _4;
+        public final Optional<E> _4;
 
-        private Quintuple(A _0, B _1, C _2, D _3, E _4) {
-            this._0 = _0;
-            this._1 = _1;
-            this._2 = _2;
-            this._3 = _3;
-            this._4 = _4;
+        private Pentuple(A _0, B _1, C _2, D _3, E _4) {
+            super(_0, _1, _2, _3);
+            this._4 = Optional.ofNullable(_4);
+        }
+
+        public Optional<E> $4() {
+            return _4;
+        }
+
+        public Optional<E> fifth() {
+            return _4;
         }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Quintuple)) return false;
-            Quintuple<?, ?, ?, ?, ?> quintuple = (Quintuple<?, ?, ?, ?, ?>) o;
-            return Objects.equals(_0, quintuple._0) &&
-                    Objects.equals(_1, quintuple._1) &&
-                    Objects.equals(_2, quintuple._2) &&
-                    Objects.equals(_3, quintuple._3) &&
-                    Objects.equals(_4, quintuple._4);
+            if (!(o instanceof Pentuple)) return false;
+            Pentuple<?, ?, ?, ?, ?> pentuple = (Pentuple<?, ?, ?, ?, ?>) o;
+            return Objects.equals(_0, pentuple._0) &&
+                    Objects.equals(_1, pentuple._1) &&
+                    Objects.equals(_2, pentuple._2) &&
+                    Objects.equals(_3, pentuple._3) &&
+                    Objects.equals(_4, pentuple._4);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_0, _1, _2, _3, _4);
+        }
+    }
+
+    public static class Hextuple<A, B, C, D, E, F> extends Pentuple<A, B, C, D, E> {
+
+        public final Optional<F> _5;
+
+        private Hextuple(A _0, B _1, C _2, D _3, E _4, F _5) {
+            super(_0, _1, _2, _3, _4);
+            this._5 = Optional.ofNullable(_5);
+        }
+
+
+        public Optional<F> $5() {
+            return _5;
+        }
+
+        public Optional<F> sixth() {
+            return _5;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Hextuple)) return false;
+            Hextuple<?, ?, ?, ?, ?, ?> hextuple = (Hextuple<?, ?, ?, ?, ?, ?>) o;
+            return Objects.equals(_0, hextuple._0) &&
+                    Objects.equals(_1, hextuple._1) &&
+                    Objects.equals(_2, hextuple._2) &&
+                    Objects.equals(_3, hextuple._3) &&
+                    Objects.equals(_4, hextuple._4) &&
+                    Objects.equals(_5, hextuple._5);
         }
 
         @Override
