@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import me.vadyalex.rill.collector.ImmutableCollectors;
+import me.vadyalex.rill.tuple.Tuples;
 
 import java.util.*;
 import java.util.function.*;
@@ -107,12 +108,24 @@ public class Rill {
         );
     }
 
-    public static final <T, U, R> Δ<R> zipUneven(BiFunction<Optional<T>, Optional<U>, R> zipper, Stream<T> firstStream, Stream<U> anotherStream) {
-        return from(firstStream).zipUneven(zipper, anotherStream);
+    public static final <E, U> Δ<Tuples.Couple<E, U>> zip(Stream<E> stream, Stream<U> anotherStream) {
+        return from(stream).zip(anotherStream);
     }
 
-    public static final <T, U, R> Δ<R> zip(BiFunction<T, U, R> zipper, Stream<T> firstStream, Stream<U> anotherStream) {
-        return from(firstStream).zip(zipper, anotherStream);
+    public static final <E, U, K> Δ<Tuples.Triple<E, U, K>> zip(Stream<E> stream0, Stream<U> stream1, Stream<K> stream2) {
+        return from(stream0).zip(stream1, stream2);
+    }
+
+    public static final <E, U, K, L> Δ<Tuples.Quadruple<E, U, K, L>> zip(Stream<E> stream0, Stream<U> stream1, Stream<K> stream2, Stream<L> stream3) {
+        return from(stream0).zip(stream1, stream2, stream3);
+    }
+
+    public static final <E, U, K, L, M> Δ<Tuples.Pentuple<E, U, K, L, M>> zip(Stream<E> stream0, Stream<U> stream1, Stream<K> stream2, Stream<L> stream3, Stream<M> stream4) {
+        return from(stream0).zip(stream1, stream2, stream3, stream4);
+    }
+
+    public static final <E, U, K, L, M, N> Δ<Tuples.Hextuple<E, U, K, L, M, N>> zip(Stream<E> stream0, Stream<U> stream1, Stream<K> stream2, Stream<L> stream3, Stream<M> stream4, Stream<N> stream5) {
+        return from(stream0).zip(stream1, stream2, stream3, stream4, stream5);
     }
 
     public static final class Δ<T> implements Stream<T> {
@@ -353,9 +366,7 @@ public class Rill {
             this.internal.close();
         }
 
-        public <U, R> Δ<R> zipUneven(BiFunction<Optional<T>, Optional<U>, R> zipper, Stream<U> stream) {
-
-            Objects.requireNonNull(zipper);
+        public <U> Δ<Tuples.Couple<T, U>> zip(Stream<U> stream) {
             Objects.requireNonNull(stream);
 
             final Spliterator<T> internalSpliterator = this.internal.spliterator();
@@ -365,38 +376,38 @@ public class Rill {
             final Iterator<T> internalIterator = Spliterators.iterator(internalSpliterator);
             final Iterator<U> anotherIterator = Spliterators.iterator(anotherSpliterator);
 
-            final Iterator<R> resultIterator = new Iterator<R>() {
+            final Iterator<Tuples.Couple<T, U>> resultIterator = new Iterator<Tuples.Couple<T, U>>() {
 
                 public boolean hasNext() {
                     return internalIterator.hasNext() || anotherIterator.hasNext();
                 }
 
-                public R next() {
-                    return zipper.apply(
+                public Tuples.Couple<T, U> next() {
+                    return Tuples.of(
                             internalIterator.hasNext() ?
-                                    Optional.ofNullable(internalIterator.next())
+                                    internalIterator.next()
                                     :
-                                    Optional.<T>empty(),
+                                    null,
                             anotherIterator.hasNext() ?
-                                    Optional.ofNullable(anotherIterator.next())
+                                    anotherIterator.next()
                                     :
-                                    Optional.<U>empty()
+                                    null
                     );
                 }
             };
 
 
-            int characteristics = internalSpliterator.characteristics() & anotherSpliterator.characteristics() & ~(Spliterator.DISTINCT | Spliterator.SORTED);
+            final int characteristics = internalSpliterator.characteristics() & anotherSpliterator.characteristics() & ~(Spliterator.DISTINCT | Spliterator.SORTED);
 
-            long zipSize = ((characteristics & Spliterator.SIZED) != 0) ?
-                    Math.min(
+            final long zipSize = ((characteristics & Spliterator.SIZED) != 0) ?
+                    Math.max(
                             internalSpliterator.getExactSizeIfKnown(),
                             anotherSpliterator.getExactSizeIfKnown()
                     )
                     :
                     -1;
 
-            final Spliterator<R> result = Spliterators.spliterator(resultIterator, zipSize, characteristics);
+            final Spliterator<Tuples.Couple<T, U>> result = Spliterators.spliterator(resultIterator, zipSize, characteristics);
 
             return from(
                     (this.isParallel() || stream.isParallel()) ?
@@ -406,92 +417,94 @@ public class Rill {
             );
         }
 
-        public <U, R> Δ<R> zipUneven(BiFunction<Optional<T>, Optional<U>, R> zipper, U... ts) {
-            return this.zipUneven(
-                    zipper,
-                    from(ts)
-            );
-        }
-
-        public <U, R> Δ<R> zipUneven(BiFunction<Optional<T>, Optional<U>, R> zipper, Iterable<U> iterable) {
-            return this.zipUneven(
-                    zipper,
-                    from(iterable)
-            );
-        }
-
-        public <U, R> Δ<R> zipUneven(BiFunction<Optional<T>, Optional<U>, R> zipper, Iterator<U> iterator) {
-            return this.zipUneven(
-                    zipper,
-                    from(iterator)
-            );
-        }
-
-        @SuppressWarnings("unchecked")
-        public <U, R> Δ<R> zip(BiFunction<? super T, U, R> zipper, Stream<U> stream) {
-
-            Objects.requireNonNull(zipper);
-            Objects.requireNonNull(stream);
-
-            final Spliterator<T> internalSpliterator = this.internal.spliterator();
-            final Spliterator<U> anotherSpliterator = stream.spliterator();
-
-
-            final Iterator<T> internalIterator = Spliterators.iterator(internalSpliterator);
-            final Iterator<U> anotherIterator = Spliterators.iterator(anotherSpliterator);
-
-            final Iterator<R> resultIterator = new Iterator<R>() {
-
-                public boolean hasNext() {
-                    return internalIterator.hasNext() && anotherIterator.hasNext();
-                }
-
-                public R next() {
-                    return zipper.apply(
-                            internalIterator.next(),
-                            anotherIterator.next()
-                    );
-                }
-            };
-
-
-            int characteristics = internalSpliterator.characteristics() & anotherSpliterator.characteristics() & ~(Spliterator.DISTINCT | Spliterator.SORTED);
-
-            long zipSize = ((characteristics & Spliterator.SIZED) != 0) ?
-                    Math.min(
-                            internalSpliterator.getExactSizeIfKnown(),
-                            anotherSpliterator.getExactSizeIfKnown()
+        public <U, V> Δ<Tuples.Triple<T, U, V>> zip(Stream<U> stream1, Stream<V> stream2) {
+            return this
+                    .zip(
+                            stream1
                     )
-                    :
-                    -1;
-
-            final Spliterator<R> result = Spliterators.spliterator(resultIterator, zipSize, characteristics);
-
-            return from(
-                    (this.isParallel() || stream.isParallel()) ?
-                            StreamSupport.stream(result, true)
-                            :
-                            StreamSupport.stream(result, false)
-            );
+                    .zip(
+                            stream2
+                    )
+                    .map(
+                            couples -> Tuples.of(
+                                    couples.$0().flatMap(Tuples.Couple::$0).orElse(null),
+                                    couples.$0().flatMap(Tuples.Couple::$1).orElse(null),
+                                    couples.$1().orElse(null)
+                            )
+                    );
         }
 
-        public <U, R> Δ<R> zip(BiFunction<? super T, U, R> zipper, U... ts) {
+        public <U, V, K> Δ<Tuples.Quadruple<T, U, V, K>> zip(Stream<U> stream1, Stream<V> stream2, Stream<K> stream3) {
+            return this
+                    .zip(
+                            stream1, stream2
+                    )
+                    .zip(
+                            stream3
+                    )
+                    .map(
+                            couples -> Tuples.of(
+                                    couples.$0().flatMap(Tuples.Triple::$0).orElse(null),
+                                    couples.$0().flatMap(Tuples.Triple::$1).orElse(null),
+                                    couples.$0().flatMap(Tuples.Triple::$2).orElse(null),
+                                    couples.$1().orElse(null)
+                            )
+                    );
+        }
+
+        public <U, V, K, L> Δ<Tuples.Pentuple<T, U, V, K, L>> zip(Stream<U> stream1, Stream<V> stream2, Stream<K> stream3, Stream<L> stream4) {
+            return this
+                    .zip(
+                            stream1, stream2, stream3
+                    )
+                    .zip(
+                            stream4
+                    )
+                    .map(
+                            couples -> Tuples.of(
+                                    couples.$0().flatMap(Tuples.Quadruple::$0).orElse(null),
+                                    couples.$0().flatMap(Tuples.Quadruple::$1).orElse(null),
+                                    couples.$0().flatMap(Tuples.Quadruple::$2).orElse(null),
+                                    couples.$0().flatMap(Tuples.Quadruple::$3).orElse(null),
+                                    couples.$1().orElse(null)
+                            )
+                    );
+        }
+
+        public <U, V, K, L, M> Δ<Tuples.Hextuple<T, U, V, K, L, M>> zip(Stream<U> stream1, Stream<V> stream2, Stream<K> stream3, Stream<L> stream4, Stream<M> stream5) {
+            return this
+                    .zip(
+                            stream1, stream2, stream3, stream4
+                    )
+                    .zip(
+                            stream5
+                    )
+                    .map(
+                            couples -> Tuples.of(
+                                    couples.$0().flatMap(Tuples.Pentuple::$0).orElse(null),
+                                    couples.$0().flatMap(Tuples.Pentuple::$1).orElse(null),
+                                    couples.$0().flatMap(Tuples.Pentuple::$2).orElse(null),
+                                    couples.$0().flatMap(Tuples.Pentuple::$3).orElse(null),
+                                    couples.$0().flatMap(Tuples.Pentuple::$4).orElse(null),
+                                    couples.$1().orElse(null)
+                            )
+                    );
+        }
+
+        public <U> Δ<Tuples.Couple<T, U>> zip(U... ts) {
             return this.zip(
-                    zipper,
                     from(ts)
             );
         }
 
-        public <U, R> Δ<R> zip(BiFunction<? super T, U, R> zipper, Iterable<U> iterable) {
+        public <U> Δ<Tuples.Couple<T, U>> zip(Iterable<U> iterable) {
             return this.zip(
-                    zipper,
                     from(iterable)
             );
         }
 
-        public <U, R> Δ<R> zip(BiFunction<? super T, U, R> zipper, Iterator<U> iterator) {
+        public <U> Δ<Tuples.Couple<T, U>> zip(Iterator<U> iterator) {
             return this.zip(
-                    zipper,
                     from(iterator)
             );
         }

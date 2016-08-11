@@ -156,8 +156,10 @@ public class RillTest {
                 .join(3)
                 .join(0)
                 .zip(
-                        (a, b) -> a + " -> " + b,
-                        1, 2, 3, 4
+                        "A", "B", "C", "D"
+                )
+                .map(
+                        couple -> couple._0.orElse(-1) + " -> " + couple._1.orElse("")
                 )
                 .toImmutableList();
 
@@ -167,10 +169,43 @@ public class RillTest {
                 .assertThat(result)
                 .hasSize(4)
                 .contains(
-                        "1 -> 1",
-                        "2 -> 2",
-                        "3 -> 3",
-                        "0 -> 4"
+                        "1 -> A",
+                        "2 -> B",
+                        "3 -> C",
+                        "0 -> D"
+                );
+    }
+
+    @Test
+    public void zip() {
+
+        final Stream<String> stream0 = Rill.from("#001", "#002", "#003", null);
+        final Stream<String> stream1 = Rill.from("Mr", "Ms", "Ms");
+        final Stream<String> stream2 = Rill.from("Joe", "Ann", "Olivia", "Jonas");
+        final Stream<Integer> stream3 = Rill.from(30, 27);
+
+        final ImmutableList<String> result = Rill
+                .zip(
+                        stream0,
+                        stream1,
+                        stream2,
+                        stream3
+                )
+                .map(
+                        quadruple -> quadruple._0.orElse("#UNKNOWN") + ": " + quadruple._1.map(value -> value + " ").orElse("") + quadruple._2.orElse("") + " -> " + quadruple._3.orElse(-1)
+                )
+                .toImmutableList();
+
+        LOGGER.info(" => {}", result);
+
+        Assertions
+                .assertThat(result)
+                .hasSize(4)
+                .contains(
+                        "#001: Mr Joe -> 30",
+                        "#002: Ms Ann -> 27",
+                        "#003: Ms Olivia -> -1",
+                        "#UNKNOWN: Jonas -> -1"
                 );
     }
 
@@ -178,10 +213,12 @@ public class RillTest {
     public void zip_even() {
 
         final ImmutableList<String> result = Rill
-                .from(1, 2, 3, 4)
+                .from(1, 2, 3)
                 .zip(
-                        (i, s) -> i + " -> " + s,
                         "A", "B", "C"
+                )
+                .map(
+                        couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse("")
                 )
                 .toImmutableList();
 
@@ -203,11 +240,13 @@ public class RillTest {
 
         final ImmutableList<String> result = Rill
                 .from(0, 1, 2, 3)
-                .zipUneven(
-                        (i, s) -> i.orElse(-1) + " -> " + s.orElse(""),
+                .zip(
                         Rill.from(
                                 "A", "B", "C"
                         )
+                )
+                .map(
+                        couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse("")
                 )
                 .toImmutableList();
 
@@ -229,11 +268,15 @@ public class RillTest {
 
         final ImmutableList<String> result = Rill
                 .from(
-                        1, 2, 3, 4
+                        1, 2, 3
                 )
                 .zip(
-                        (i, s) -> i + " -> " + s,
-                        null, null, null
+                        Rill.from(
+                                null, null, null
+                        )
+                )
+                .map(
+                        couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse(null)
                 )
                 .toImmutableList();
 
@@ -256,9 +299,13 @@ public class RillTest {
                 .from(
                         1, 2, 3, 4
                 )
-                .zipUneven(
-                        (i, s) -> i.orElse(-1) + " -> " + s.orElse(""),
-                        null, null, null
+                .zip(
+                        Rill.from(
+                                null, null, null
+                        )
+                )
+                .map(
+                        couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse("")
                 )
                 .toImmutableList();
 
@@ -296,8 +343,13 @@ public class RillTest {
                 )
                 .join("C")
                 .zip(
-                        Maps::immutableEntry,
                         0, 1, 2
+                )
+                .map(
+                        couple -> Maps.immutableEntry(
+                                couple.first().orElse(""),
+                                couple.second().orElse(-1)
+                        )
                 )
                 .toImmutableMap(
                         entry -> entry
@@ -402,20 +454,9 @@ public class RillTest {
         Assertions
                 .assertThat(result)
                 .hasSize(3)
-                .containsKeys(
-                        "1",
-                        "2",
-                        "3"
-                )
-                .containsValue(
-                        1
-                )
-                .containsValue(
-                        2
-                )
-                .containsValue(
-                        3
-                );
+                .containsEntry("1", 1)
+                .containsEntry("2", 2)
+                .containsEntry("3", 3);
 
     }
 
