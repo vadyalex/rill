@@ -43,19 +43,6 @@ public class Tuples {
     }
 
     public static class Empty<A> implements Tuple {
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Empty)) return false;
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this);
-        }
-
     }
 
     public static class Monuple<A> extends Empty<A> {
