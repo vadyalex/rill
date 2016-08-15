@@ -256,7 +256,7 @@ public class Tuples {
 
         @Override
         public int hashCode() {
-            return Objects.hash(_0, _1, _2, _3, _4);
+            return Objects.hash(_0, _1, _2, _3, _4, _5);
         }
     }
 
