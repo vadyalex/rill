@@ -11,7 +11,7 @@ This tiny library is fluent facade for Java 8 streams as well as some additional
 - Join streams
 
  Standard approach to join two stream:
-```
+```java
         final Stream<Integer> stream1 = Stream.of(1);
         final Stream<Integer> stream2 = Stream.of(2);
 
@@ -24,7 +24,7 @@ This tiny library is fluent facade for Java 8 streams as well as some additional
 Easy, right? But if you want to join four streams?
 
 Standard approach:
- ```
+ ```java
         final Stream<Integer> stream1 = Stream.of(1);
         final Stream<Integer> stream2 = Stream.of(2);
         final Stream<Integer> stream3 = Stream.of(3);
@@ -85,7 +85,7 @@ Standard way:
 ```
 
 Rill way:
-
+```java
         final Stream<Integer> stream1 = Stream.of(-1, 1);
         final Stream<Integer> stream2 = Stream.of(2, 5);
         final Stream<Integer> stream3 = Stream.of(3, 0);
