@@ -22,13 +22,11 @@ public class Rill {
     }
 
     public static final <E> Δ<E> from(final E... ts) {
-
-        if (ts == null)
-            return from();
-        else
-            return from(
-                    Arrays.stream(ts)
-            );
+        return from(
+                Stream.of(
+                        ts
+                )
+        );
     }
 
     public static final <E> Δ<E> from(final E e) {
@@ -67,6 +65,18 @@ public class Rill {
         return from(
                 StreamSupport.stream(
                         iterable.spliterator(),
+                        false
+                )
+        );
+    }
+
+    public static final <E> Δ<E> from(final Iterator<E> iterator) {
+
+        Objects.requireNonNull(iterator);
+
+        return from(
+                StreamSupport.stream(
+                        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
                         false
                 )
         );
@@ -315,6 +325,10 @@ public class Rill {
         @Override
         public Optional<T> findAny() {
             return this.internal.findAny();
+        }
+
+        public Optional<T> findLast() {
+            return this.internal.reduce( (unused, result) -> result );
         }
 
         @Override
