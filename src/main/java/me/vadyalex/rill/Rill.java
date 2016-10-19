@@ -32,7 +32,7 @@ public class Rill {
     public static final <E> Δ<E> from(final E e) {
         return from(
                 Stream.of(
-                        Objects.requireNonNull(e)
+                        e
                 )
         );
     }
@@ -101,18 +101,6 @@ public class Rill {
         return from(
                 StreamSupport.stream(
                         iterable.spliterator(),
-                        false
-                )
-        );
-    }
-
-    public static final <E> Δ<E> from(final Iterator<E> iterator) {
-
-        Objects.requireNonNull(iterator);
-
-        return from(
-                StreamSupport.stream(
-                        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
                         false
                 )
         );
