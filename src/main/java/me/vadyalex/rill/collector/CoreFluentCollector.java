@@ -13,11 +13,11 @@ import java.util.stream.Stream;
 /**
  * Created by vadyalex.
  */
-public class BaseFluentCollector<T> implements FluentCollector<T> {
+public class CoreFluentCollector<T> implements FluentCollector<T> {
 
     private final Stream<T> internal;
 
-    public BaseFluentCollector(Stream<T> stream) {
+    public CoreFluentCollector(Stream<T> stream) {
         this.internal = Objects.requireNonNull(stream);
     }
 

@@ -1,7 +1,7 @@
 package me.vadyalex.rill;
 
 
-import me.vadyalex.rill.collector.BaseFluentCollector;
+import me.vadyalex.rill.collector.CoreFluentCollector;
 import me.vadyalex.rill.collector.FluentCollector;
 import me.vadyalex.rill.tuple.Tuples;
 
@@ -274,7 +274,7 @@ public class Rill {
 
         @Override
         public FluentCollector<T> collect() {
-            return new BaseFluentCollector<>(
+            return new CoreFluentCollector<>(
                     this.internal
             );
         }
