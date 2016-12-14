@@ -17,8 +17,7 @@
 
     <scm>
         <url>https://github.com/vadyalex/rill</url>
-        <connection>scm:git:git@github.com/vadyalex/rill.git</connection>
-        <developerConnection>scm:git:git@github.com/vadyalex/rill.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:vadyalex/rill.git</developerConnection>
     </scm>
 
     <distributionManagement>
