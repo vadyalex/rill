@@ -223,3 +223,22 @@ Make an ImmutableMap:
 > {A=0, B=1, C=2}
 ```
 
+### Dependency
+
+Add a dependency to project using Maven:
+
+```xml
+<dependency>
+  <groupId>me.vadyalex</groupId>
+  <artifactId>rill</artifactId>
+  <version>0.0.1</version>
+</dependency>
+```
+
+Add a dependency using Gradle:
+
+```
+dependencies {
+  compile 'me.vadyalex:rill:0.0.1'
+}
+```
