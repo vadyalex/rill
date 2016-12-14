@@ -167,11 +167,12 @@ Drop Google Guava to classpath and collect content of the stream into immutable 
 > ["A", "B", "C"]
 ```
 
-Or using built-in method:
+Or using FluentCollector:
 
 ```java
         ImmutableList<String> list = Rill
                 .from("A", "B", "C")
+                .collect()
                 .toImmutableList();
 ```
 ```
@@ -180,6 +181,7 @@ Or using built-in method:
 ```java
         ImmutableSet<String> set = Rill
                 .from("A", "B", "C")
+                .collect()
                 .toImmutableSet();
 ```
 ```

@@ -162,6 +162,7 @@ public class RillTest {
                 .map(
                         couple -> couple._0.orElse(-1) + " -> " + couple._1.orElse("")
                 )
+                .collect()
                 .toImmutableList();
 
         LOGGER.info(" => {}", result);
@@ -195,6 +196,7 @@ public class RillTest {
                 .map(
                         quadruple -> quadruple._0.orElse("#UNKNOWN") + ": " + quadruple._1.map(value -> value + " ").orElse("") + quadruple._2.orElse("") + " -> " + quadruple._3.orElse(-1)
                 )
+                .collect()
                 .toImmutableList();
 
         LOGGER.info(" => {}", result);
@@ -221,6 +223,7 @@ public class RillTest {
                 .map(
                         couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse("")
                 )
+                .collect()
                 .toImmutableList();
 
         LOGGER.info(" => {}", result);
@@ -249,6 +252,7 @@ public class RillTest {
                 .map(
                         couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse("")
                 )
+                .collect()
                 .toImmutableList();
 
         LOGGER.info(" => {}", result);
@@ -279,6 +283,7 @@ public class RillTest {
                 .map(
                         couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse(null)
                 )
+                .collect()
                 .toImmutableList();
 
         LOGGER.info(" => {}", result);
@@ -308,6 +313,7 @@ public class RillTest {
                 .map(
                         couple -> couple.first().orElse(-1) + " -> " + couple.second().orElse("")
                 )
+                .collect()
                 .toImmutableList();
 
         LOGGER.info(" => {}", result);
@@ -352,6 +358,7 @@ public class RillTest {
                                 couple.second().orElse(-1)
                         )
                 )
+                .collect()
                 .toImmutableMap(
                         entry -> entry
                 );
@@ -418,6 +425,7 @@ public class RillTest {
                         stream3,
                         stream4
                 )
+                .collect()
                 .toImmutableList();
 
         Assertions.assertThat(result).containsExactly(-2, -1, 0, 1, 2, 3, 4, 5, 6);
@@ -473,6 +481,7 @@ public class RillTest {
                 .from(
                         1, 2, 3
                 )
+                .collect()
                 .toImmutableMap(
                         Object::toString,
                         i -> i
