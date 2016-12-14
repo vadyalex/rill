@@ -2,6 +2,8 @@
 
 
 [![Build Status](https://travis-ci.org/vadyalex/rill.svg)](https://travis-ci.org/vadyalex/rill)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill.svg)](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill)
+[![Javadocs](http://www.javadoc.io/badge/me.vadyalex/rill.svg)](http://www.javadoc.io/doc/me.vadyalex/rill)
 
 
 This tiny library is fluent facade for Java 8 streams as well as some additional stream operation goodies, like stream zipping and stream concatenation.
