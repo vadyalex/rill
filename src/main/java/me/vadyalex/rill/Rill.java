@@ -123,7 +123,7 @@ public class Rill {
         return from(stream0).zip(stream1, stream2, stream3, stream4, stream5);
     }
 
-    public static final class Δ<T> implements Stream<T> {
+    public static final class Δ<T> implements FluentStream<T> {
 
         private final Stream<T> internal;
 
