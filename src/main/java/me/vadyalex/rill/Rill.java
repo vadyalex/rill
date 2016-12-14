@@ -163,7 +163,7 @@ public class Rill {
         }
 
         @Override
-        public <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
+        public <R> Rill.Δ<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
             return from(
                     this.internal.flatMap(mapper)
             );
@@ -272,6 +272,7 @@ public class Rill {
             return this.internal.collect(collector);
         }
 
+        @Override
         public FluentCollector<T> collect() {
             return new BaseFluentCollector<>(
                     this.internal
@@ -318,6 +319,7 @@ public class Rill {
             return this.internal.findAny();
         }
 
+        @Override
         public Optional<T> findLast() {
             return this.internal.reduce( (unused, result) -> result );
         }
@@ -371,6 +373,7 @@ public class Rill {
             this.internal.close();
         }
 
+        @Override
         public <U> Δ<Tuples.Couple<T, U>> zip(Stream<U> stream) {
             Objects.requireNonNull(stream);
 
@@ -422,6 +425,7 @@ public class Rill {
             );
         }
 
+        @Override
         public <U, V> Δ<Tuples.Triple<T, U, V>> zip(Stream<U> stream1, Stream<V> stream2) {
             return this
                     .zip(
@@ -439,6 +443,7 @@ public class Rill {
                     );
         }
 
+        @Override
         public <U, V, K> Δ<Tuples.Quadruple<T, U, V, K>> zip(Stream<U> stream1, Stream<V> stream2, Stream<K> stream3) {
             return this
                     .zip(
@@ -457,6 +462,7 @@ public class Rill {
                     );
         }
 
+        @Override
         public <U, V, K, L> Δ<Tuples.Pentuple<T, U, V, K, L>> zip(Stream<U> stream1, Stream<V> stream2, Stream<K> stream3, Stream<L> stream4) {
             return this
                     .zip(
@@ -476,6 +482,7 @@ public class Rill {
                     );
         }
 
+        @Override
         public <U, V, K, L, M> Δ<Tuples.Hextuple<T, U, V, K, L, M>> zip(Stream<U> stream1, Stream<V> stream2, Stream<K> stream3, Stream<L> stream4, Stream<M> stream5) {
             return this
                     .zip(
@@ -496,24 +503,28 @@ public class Rill {
                     );
         }
 
+        @Override
         public <U> Δ<Tuples.Couple<T, U>> zip(U... ts) {
             return this.zip(
                     from(ts)
             );
         }
 
+        @Override
         public <U> Δ<Tuples.Couple<T, U>> zip(Iterable<U> iterable) {
             return this.zip(
                     from(iterable)
             );
         }
 
+        @Override
         public <U> Δ<Tuples.Couple<T, U>> zip(Iterator<U> iterator) {
             return this.zip(
                     from(iterator)
             );
         }
 
+        @Override
         public Δ<T> join(Stream<? extends T> stream) {
             return from(
                     Stream.concat(
@@ -523,6 +534,7 @@ public class Rill {
             );
         }
 
+        @Override
         public Δ<T> join(Stream<? extends T>... streams) {
             return from(streams)
                     .reduce(
@@ -532,6 +544,7 @@ public class Rill {
                     );
         }
 
+        @Override
         public Δ<T> join(T t) {
             return join(
                     from(
@@ -540,6 +553,7 @@ public class Rill {
             );
         }
 
+        @Override
         public Δ<T> join(T... ts) {
             return join(
                     from(
@@ -548,6 +562,7 @@ public class Rill {
             );
         }
 
+        @Override
         public Δ<T> join(Iterable<? extends T> iterable) {
             return join(
                     from(
@@ -556,6 +571,7 @@ public class Rill {
             );
         }
 
+        @Override
         public Δ<T> join(Iterator<? extends T> iterator) {
             return join(
                     from(
