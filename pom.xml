@@ -5,7 +5,7 @@
     <groupId>me.vadyalex</groupId>
     <artifactId>rill</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <url>https://github.com/vadyalex/rill</url>
 
@@ -34,7 +34,7 @@
     <scm>
         <url>https://github.com/vadyalex/rill</url>
         <developerConnection>scm:git:git@github.com:vadyalex/rill.git</developerConnection>
-      <tag>1.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
