@@ -9,10 +9,27 @@
 
     <url>https://github.com/vadyalex/rill</url>
 
+    <name>rill</name>
     <description>
         This tiny library is fluent facade for Java 8 streams as well as some additional stream operation goodies, like
         stream zipping and stream concatenation.
     </description>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>vadyalex</id>
+            <name>Vladyslav Aleksakhin</name>
+            <email>vadyalex at gmail.com</email>
+        </developer>
+    </developers>
 
     <scm>
         <url>https://github.com/vadyalex/rill</url>
