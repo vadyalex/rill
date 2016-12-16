@@ -2,7 +2,7 @@
 
 
 [![Build Status](https://travis-ci.org/vadyalex/rill.svg)](https://travis-ci.org/vadyalex/rill)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill.svg)](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill)
 [![Javadocs](http://www.javadoc.io/badge/me.vadyalex/rill.svg)](http://www.javadoc.io/doc/me.vadyalex/rill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -233,7 +233,7 @@ Add a dependency to project using Maven:
 <dependency>
   <groupId>me.vadyalex</groupId>
   <artifactId>rill</artifactId>
-  <version>0.0.1</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -241,6 +241,6 @@ Add a dependency using Gradle:
 
 ```
 dependencies {
-  compile 'me.vadyalex:rill:0.0.1'
+  compile 'me.vadyalex:rill:1.0.1'
 }
 ```
