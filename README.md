@@ -1,7 +1,6 @@
 ## rill
 
-
-[![Build Status](https://travis-ci.org/vadyalex/rill.svg)](https://travis-ci.org/vadyalex/rill)
+[![Build Status](https://github.com/vadyalex/rill/actions/workflows/install.yaml/badge.svg)](https://github.com/vadyalex/rill/actions/workflows/install.yaml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill.svg)](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill)
 [![Javadocs](http://www.javadoc.io/badge/me.vadyalex/rill.svg)](http://www.javadoc.io/doc/me.vadyalex/rill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
