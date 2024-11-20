@@ -35,8 +35,8 @@ jobs:
     - name: Build with Maven
       run: mvn package
 
-  dependabot:
-    if: github.event.label.name == 'dependabot' || github.event.label.name == 'automerge'
+  automerge:
+    if: github.event.pull_request.user.login == 'dependabot[bot]' || contains(github.event.pull_request.labels.*.name, 'automerge')
     needs: build
 
     runs-on: ubuntu-latest
@@ -45,8 +45,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Cache Maven packages
-      uses: actions/cache@v3
+    - name: Automerge PR
+      uses: actions/github-script@v6
       with:
         script: |
           const { context, github } = require('@actions/github');
