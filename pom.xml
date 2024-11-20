@@ -11,7 +11,7 @@
 
     <name>rill</name>
     <description>
-        This tiny library is fluent facade for Java 8 streams as well as some additional stream operation goodies, like
+        This tiny library is fluent facade for Java streams as well as some additional stream operation goodies, like
         stream zipping and stream concatenation.
     </description>
 
@@ -26,7 +26,7 @@
     <developers>
         <developer>
             <id>vadyalex</id>
-            <name>Vladyslav Aleksakhin</name>
+            <name>vadyalex</name>
             <email>vadyalex at gmail.com</email>
         </developer>
     </developers>
@@ -98,8 +98,8 @@
                 <version>3.3</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
             <plugin>
