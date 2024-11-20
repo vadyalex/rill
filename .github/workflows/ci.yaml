@@ -35,25 +35,26 @@ jobs:
     - name: Build with Maven
       run: mvn package
 
-  automerge:
-    if: github.event.pull_request.user.login == 'dependabot[bot]' || contains(github.event.pull_request.labels.*.name, 'automerge')
-    needs: build
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Automerge PR
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const { context, github } = require('@actions/github');
-          const pull_number = context.payload.pull_request.number;
-          await github.pulls.merge({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: pull_number,
-            merge_method: 'squash'
-          });
+#  automerge:
+#    if: github.event.pull_request.user.login == 'dependabot[bot]' || contains(github.event.pull_request.labels.*.name, 'automerge')
+#    needs: build
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - name: Checkout repository
+#      uses: actions/checkout@v3
+#
+#    - name: Automerge PR
+#      uses: actions/github-script@v6
+#      with:
+#        script: |
+#          const pull_number = context.payload.pull_request.number;
+#          await github.pulls.merge({
+#            owner: context.repo.owner,
+#            repo: context.repo.repo,
+#            pull_number: pull_number,
+#            merge_method: 'squash'
+#          });
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
