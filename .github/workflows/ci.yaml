@@ -7,6 +7,9 @@ on:
   pull_request:
     branches:
       - '**'
+  pull_request_target:
+    types:
+      - labeled
 
 jobs:
   build:
@@ -31,3 +34,26 @@ jobs:
 
     - name: Build with Maven
       run: mvn package
+
+  dependabot:
+    if: github.event.label.name == 'dependabot'
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        script: |
+          const { context, github } = require('@actions/github');
+          const pull_number = context.payload.pull_request.number;
+          await github.pulls.merge({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: pull_number,
+            merge_method: 'squash'
+          });
