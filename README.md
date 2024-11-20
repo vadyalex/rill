@@ -6,7 +6,7 @@
 [![Javadocs](http://www.javadoc.io/badge/me.vadyalex/rill.svg)](http://www.javadoc.io/doc/me.vadyalex/rill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This tiny library is fluent facade for Java 8 streams as well as some additional stream operation goodies, like stream zipping and stream concatenation.
+This tiny library is fluent facade for Java streams as well as some additional stream operation goodies, like stream zipping and stream concatenation.
 
 ### Motivation
 
