@@ -36,7 +36,7 @@ jobs:
       run: mvn package
 
   dependabot:
-    if: github.event.label.name == 'dependabot'
+    if: github.event.label.name == 'dependabot' || github.event.label.name == 'automerge'
     needs: build
 
     runs-on: ubuntu-latest
