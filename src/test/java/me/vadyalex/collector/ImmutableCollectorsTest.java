@@ -78,19 +78,10 @@ public class ImmutableCollectorsTest {
                         ImmutableCollectors
                                 .toImmutableSortedSet(
                                         (o1, o2) -> {
-                                            if (o1 == 0)
-                                                return -1;
-
-                                            if (o2 == 0)
-                                                return 1;
-
-                                            if (o1 > o2)
-                                                return 1;
-
-                                            if (o1 < o2)
-                                                return -1;
-
-                                            return 0;
+                                            if (o1.equals(o2)) return 0;
+                                            if (o1 == 0) return -1;
+                                            if (o2 == 0) return 1;
+                                            return Integer.compare(o1, o2);
                                         }
                                 )
                 );
@@ -98,8 +89,8 @@ public class ImmutableCollectorsTest {
         Assertions
                 .assertThat(result)
                 .isInstanceOf(ImmutableSortedSet.class)
-                .hasSize(10)
-                .containsSubsequence(0, 0, -99, -1, 2, 3, 4, 5, 6, 99);
+                .hasSize(9)
+                .containsSubsequence(0, -99, -1, 2, 3, 4, 5, 6, 99);
 
     }
 
