@@ -1,60 +1,30 @@
-name: rill CI
+name: CI
 
 on:
   push:
-    branches:
-      - '**'
+    branches: ['**']
   pull_request:
-    branches:
-      - '**'
-  pull_request_target:
-    types:
-      - labeled
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'adopt'
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
 
-    - name: Cache Maven packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-maven
-
-    - name: Build with Maven
-      run: mvn package
-
-#  automerge:
-#    if: github.event.pull_request.user.login == 'dependabot[bot]' || contains(github.event.pull_request.labels.*.name, 'automerge')
-#    needs: build
-#
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#    - name: Checkout repository
-#      uses: actions/checkout@v3
-#
-#    - name: Automerge PR
-#      uses: actions/github-script@v6
-#      with:
-#        script: |
-#          const pull_number = context.payload.pull_request.number;
-#          await github.pulls.merge({
-#            owner: context.repo.owner,
-#            repo: context.repo.repo,
-#            pull_number: pull_number,
-#            merge_method: 'squash'
-#          });
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build with Maven
+        run: mvn -B -ntp verify
