@@ -4,6 +4,7 @@ on:
   push:
     branches: ['**']
   pull_request:
+    branches: ['**']
 
 permissions:
   contents: read
@@ -27,4 +28,4 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -B -ntp verify
+        run: mvn -B -ntp verify -DskipTests=false

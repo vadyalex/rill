@@ -14,10 +14,10 @@ permissions:
 
 jobs:
   deploy-snapshot:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' || inputs.allow_non_master_deploy == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 21
@@ -48,5 +48,5 @@ jobs:
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
       - name: Deploy snapshot
-        if: ${{ github.ref == 'refs/heads/master' || inputs.allow_non_master_deploy }}
+        if: ${{ github.ref == 'refs/heads/master' || inputs.allow_non_master_deploy == 'true' }}
         run: mvn -B -ntp deploy
