@@ -51,14 +51,7 @@ jobs:
         run: |
           mkdir -p ~/.gnupg
           chmod 700 ~/.gnupg
-
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-
-          # Make GPG usable in CI (no interactive pinentry)
-          cat >> ~/.gnupg/gpg.conf <<'EOF'
-          use-agent
-          pinentry-mode loopback
-          EOF
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
@@ -67,8 +60,8 @@ jobs:
           TAG_NAME="${GITHUB_REF#refs/tags/v}"
           mvn -B -ntp -Prelease deploy \
             -Drevision="${TAG_NAME}" \
-            -Dgpg.passphrase="${GPG_PASSPHRASE}"
+            -Dgpg.keyname="${GPG_KEYNAME}"
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_KEYNAME: ${{ secrets.GPG_KEYNAME }}
