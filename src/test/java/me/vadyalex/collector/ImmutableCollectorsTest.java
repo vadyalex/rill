@@ -57,6 +57,7 @@ public class ImmutableCollectorsTest {
 
         final Collection<Integer> result = Stream
                 .of(2, 4, 3, 1, 5, 6)
+                .parallel()
                 .collect(
                         ImmutableCollectors.toImmutableSortedSet()
                 );
@@ -74,6 +75,7 @@ public class ImmutableCollectorsTest {
 
         final Collection<Integer> result = Stream
                 .of(2, 4, 3, 0, -1, 5, 6, 0, 99, -99)
+                .parallel()
                 .collect(
                         ImmutableCollectors
                                 .toImmutableSortedSet(

@@ -34,7 +34,7 @@ public class ImmutableCollectors {
         return Collector.of(
                 ImmutableSortedSet::naturalOrder,
                 (BiConsumer<ImmutableSortedSet.Builder<T>, T>) ImmutableSortedSet.Builder::add,
-                (b1, b2) -> b1.addAll(b1.build()),
+                (b1, b2) -> b1.addAll(b2.build()),
                 ImmutableSortedSet.Builder::build
         );
     }
@@ -43,7 +43,7 @@ public class ImmutableCollectors {
         return Collector.of(
                 () -> ImmutableSortedSet.orderedBy(comparator),
                 (BiConsumer<ImmutableSortedSet.Builder<T>, T>) ImmutableSortedSet.Builder::add,
-                (b1, b2) -> b1.addAll(b1.build()),
+                (b1, b2) -> b1.addAll(b2.build()),
                 ImmutableSortedSet.Builder::build
         );
     }
