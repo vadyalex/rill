@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "*.*.*"
 
 permissions:
   contents: read
@@ -59,7 +59,7 @@ jobs:
 
       - name: Build and release
         run: |
-          TAG_NAME="${GITHUB_REF#refs/tags/v}"
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
           mvn -B -ntp -Prelease deploy \
             -Drevision="${TAG_NAME}" \
             -Dgpg.keyname="${GPG_KEYNAME}"
