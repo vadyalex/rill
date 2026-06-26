@@ -1,9 +1,8 @@
 ## rill
 
 
-[![Build Status](https://travis-ci.org/vadyalex/rill.svg)](https://travis-ci.org/vadyalex/rill)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.vadyalex/rill)
-[![Javadocs](http://www.javadoc.io/badge/me.vadyalex/rill.svg)](http://www.javadoc.io/doc/me.vadyalex/rill)
+[![Maven Central](https://img.shields.io/maven-central/v/me.vadyalex/rill)](https://central.sonatype.com/artifact/me.vadyalex/rill)
+[![Javadocs](https://javadoc.io/badge2/me.vadyalex/rill/javadoc.svg)](https://javadoc.io/doc/me.vadyalex/rill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This tiny library is fluent facade for Java streams as well as some additional stream operation goodies, like stream zipping and stream concatenation.
@@ -227,13 +226,13 @@ Make an ImmutableMap:
 
 ### Dependency
 
-Add a dependency to project using Maven:
+Check [latest version on Maven Central](https://central.sonatype.com/artifact/me.vadyalex/rill). Add a dependency to project using Maven:
 
 ```xml
 <dependency>
   <groupId>me.vadyalex</groupId>
   <artifactId>rill</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 
@@ -241,6 +240,6 @@ Add a dependency using Gradle:
 
 ```
 dependencies {
-  compile 'me.vadyalex:rill:1.0.1'
+  compile 'me.vadyalex:rill:1.0.3'
 }
 ```
